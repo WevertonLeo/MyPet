@@ -1,0 +1,24 @@
+# Laravel
+/backend/vendor
+/backend/node_modules
+/backend/public/storage
+/backend/storage/*.key
+/backend/.env
+/backend/.phpunit.result.cache
+
+# Frontend
+/frontend/node_modules
+/frontend/dist
+/frontend/.env
+
+# Docker volumes
+docker/db_data
+
+# Logs
+*.log
+
+# IDEs e sistema
+.vscode
+.idea
+.DS_Store
+Thumbs.db

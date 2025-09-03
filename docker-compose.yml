@@ -1,0 +1,60 @@
+
+version: '3.8'
+
+services:
+  # Serviço do Laravel (PHP + Composer)
+  app:
+    build:
+      context: ./docker/php
+    container_name: mypet_app
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    user: "${UID:-1000}:${GID:-1000}"
+
+  # Servidor Nginx para servir o Laravel
+  nginx:
+    image: nginx:alpine
+    container_name: mypet_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  # Banco de dados MySQL
+  db:
+    image: mysql:8.0
+    container_name: mypet_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mypet
+      MYSQL_USER: mypet_user
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # PhpMyAdmin (opcional para gerenciar o banco via navegador)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: mypet_phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: mypet_user
+      PMA_PASSWORD: secret
+    depends_on:
+      - db
+
+volumes:
+  db_data:
