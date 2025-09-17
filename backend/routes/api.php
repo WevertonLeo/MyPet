@@ -3,5 +3,10 @@
 use App\Http\Controllers\API\PetController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/pets', [PetController::class, 'store']);
-Route::get('/pets', [PetController::class, 'index']);
+Route::prefix('pets')
+->controller(PetController::class)
+->name('pets.')
+->group(function (){
+    Route::get('/', [PetController::class, 'index']);
+    Route::post('/', [PetController::class, 'store']);
+});

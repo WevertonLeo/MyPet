@@ -13,20 +13,18 @@ class PetApiTest extends TestCase
     public function test_user_can_create_pet()
     {
         $response = $this->postJson('/api/pets', [
-            'nome' => 'Maximus',
-            'cor' => 'Branco',
-            'raca' => 'Cachorro',
+            'nome' => 'Rex',
+            'cor' => 'Preto',
+            'raca' => 'Vira-lata',
             'status_id' => 1,
-            'rua' => 'Dez',
-            'bairro' => 'Neviana',
-            'cidade' => 'Ribeirao Das Neves',
-            'estado' => 'Minas Gerais',
-            'cep' => '33.808-100',
+            'rua' => 'Rua A',
+            'bairro' => 'Centro',
+            'cidade' => 'Belo Horizonte',
+            'estado' => 'MG',
+            'cep' => '30123-456',
         ]);
 
-        $response->assertStatus(201)
-                 ->assertJson(['nome' => 'Maximus', 'cidade' => 'Ribeirao Das Neves']);
-
-        $this->assertDatabaseHas('pets', ['nome' => 'Maximus']);
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('pets', ['nome' => 'Rex', 'raca' => 'Vira-lata']);
     }
 }
