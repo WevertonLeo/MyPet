@@ -1,6 +1,4 @@
 
-version: '3.8'
-
 services:
   # Serviço do Laravel (PHP + Composer)
   app:
@@ -9,11 +7,11 @@ services:
     container_name: mypet_app
     volumes:
       - ./backend:/var/www
+    user: "${UID}:${GID}"
     ports:
       - "9000:9000"
     depends_on:
       - db
-    user: "${UID:-1000}:${GID:-1000}"
 
   # Servidor Nginx para servir o Laravel
   nginx:
