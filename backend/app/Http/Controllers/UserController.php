@@ -3,24 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterUserRequest;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    public function store(RegisterUserRequest $request): JsonResponse
+    protected $service;
+
+    public function __construct(UserService $service)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'tipo_usuario' => $request->tipo_usuario,
-        ]);
+        $this->service = $service;
+    }
+
+    public function register(RegisterUserRequest $request): JsonResponse
+    {
+        $result = $this->service->register($request->validated());
 
         return response()->json([
-            'message' => 'Usuário cadastrado com sucesso.',
-            'user' => $user
+            'user' => $result['user'],
+            'token' => $result['token']
         ], 201);
     }
 }
