@@ -20,7 +20,7 @@ class UserService
     {
         $data['password'] = Hash::make($data['password']);
         $user = $this->repository->create($data);
-        $token = Auth::login($user);
+        $token = auth('api')->login($user);
 
         return [
             'user' => $user,
@@ -44,16 +44,16 @@ class UserService
 
     public function logout(): void
     {
-        Auth::logout();
+        auth('api')->logout();
     }
 
     public function refresh(): string
     {
-        return Auth::refresh();
+        return auth('api')->refresh();
     }
 
     public function getCurrentUser(): ?User
     {
-        return Auth::user();
+        return auth('api')->user();
     }
 }

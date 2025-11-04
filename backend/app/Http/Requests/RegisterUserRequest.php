@@ -17,7 +17,7 @@ class RegisterUserRequest extends FormRequest
             'name'         => 'required|string|max:255',
             'email'        => 'required|email|unique:users,email',
             'password'     => 'required|string|min:6',
-            'tipo_usuario' => 'boolean',
+            'tipo_usuario' => 'required|integer|in:0,1',
         ];
     }
 }
