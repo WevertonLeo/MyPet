@@ -21,8 +21,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::controller(EnderecoController::class)
     ->group(function(){
-        Route::post('/enderecos', 'store');
-        Route::get('/enderecos', 'show');
+        Route::get('/enderecos',    'index');
+        Route::post('/enderecos',   'store');
+        Route::put('/enderecos',    'update');
     });
 
 });
