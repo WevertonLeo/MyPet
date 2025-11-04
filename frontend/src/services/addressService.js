@@ -16,6 +16,20 @@ export const addressService = {
   },
 
   /**
+   * @param {Object} addressData - Dados do endereço
+   * @returns {Promise}
+   */
+  async updateAddress(addressData) {
+    try {
+      const response = await api.put("/enderecos", addressData);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao atualizar endereço:", error);
+      throw error.response?.data || { message: "Erro desconhecido no servidor." };
+    }
+  },
+
+  /**
    * @returns {Promise}
    */
   async getAddresses() {

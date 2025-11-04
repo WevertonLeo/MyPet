@@ -24,10 +24,8 @@ export default {
   },
 
   saveAuth(user, token) {
-    console.log('Salvando autenticação:', { user: user.name, token: token ? 'Presente' : 'Ausente' });
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("token", token);
-    console.log('Token salvo no localStorage:', localStorage.getItem('token') ? 'Sucesso' : 'Falhou');
   },
 
   clearAuth() {
