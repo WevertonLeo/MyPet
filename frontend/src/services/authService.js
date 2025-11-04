@@ -43,6 +43,8 @@ export default {
   },
 
   isAuthenticated() {
-    return !!localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    return !!(token && user);
   },
 };

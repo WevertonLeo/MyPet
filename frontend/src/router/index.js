@@ -32,16 +32,17 @@ const router = createRouter({
   routes,
 });
 
-// Middleware de autenticação
-router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !authService.isAuthenticated()) {
-    return next("/");
-  }
 
-  if (to.path === "/" && authService.isAuthenticated()) {
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = authService.isAuthenticated();
+  const requiresAuth = to.meta.requiresAuth;
+
+  if (requiresAuth && !isAuthenticated) return next("/");
+
+  if (isAuthenticated && (to.path === "/" || to.path === "/login" || to.path === "/register")) {
     return next("/dashboard");
   }
-  
+
   next();
 });
 

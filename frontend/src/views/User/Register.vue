@@ -103,14 +103,14 @@
           name: name.value,
           email: email.value,
           password: password.value,
-          tipo_usuario: tipoUsuario.value,
+          tipo_usuario: tipoUsuario.value ? 1 : 0,
         };
 
         try {
             await authService.register(userData);
 
-            if(userData.tipo_usuario){
-                router.push('/addAdress');
+            if(userData.tipo_usuario === 1){
+                router.push('/addAddress');
                 return;
             }
 
