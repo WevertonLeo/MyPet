@@ -12,6 +12,7 @@
           <input
             type="email"
             v-model="email"
+            required
             placeholder="seuemail@email.com"
             class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none transition"
           />
@@ -21,15 +22,22 @@
           <input
             type="password"
             v-model="password"
+            required
             placeholder="********"
             class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:outline-none transition"
           />
         </div>
+        
+        <div v-if="error" class="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-xl text-sm">
+          {{ error }}
+        </div>
+        
         <button
           type="submit"
-          class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-xl transition"
+          :disabled="loading"
+          class="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white font-semibold py-2 rounded-xl transition"
         >
-          Entrar
+          {{ loading ? 'Entrando...' : 'Entrar' }}
         </button>
       </form>
 
@@ -44,12 +52,27 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+    import { ref } from "vue";
+    import { useRouter } from "vue-router";
+    import authService from "@/services/authService";
 
-const email = ref("");
-const password = ref("");
+    const router = useRouter();
+    const email = ref("");
+    const password = ref("");
+    const loading = ref(false);
+    const error = ref("");
 
-const login = () => {
-  console.log("Login com:", email.value, password.value);
-};
+    const login = async () => {
+        loading.value = true;
+        error.value = "";
+
+        try {
+            await authService.login(email.value, password.value);
+            router.push("/dashboard");
+        } catch (err) {
+            error.value = err.response?.data?.message || "Erro ao fazer login. Verifique suas credenciais.";
+        } finally {
+            loading.value = false;
+        }
+    };
 </script>
